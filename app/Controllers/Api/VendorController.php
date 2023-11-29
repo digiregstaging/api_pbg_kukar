@@ -53,11 +53,11 @@ class VendorController extends BaseController
             ];
 
 
-            $modelActivity = new Vendor();
-            $modelActivity->insert($data);
+            $vendorModel = new Vendor();
+            $vendorModel->insert($data);
 
 
-            $data["id"] = $modelActivity->getInsertID();
+            $data["id"] = $vendorModel->getInsertID();
 
             log_message("info", "end method store on VendorController");
             return Response::apiResponse("success create vendor", $data);
@@ -70,12 +70,12 @@ class VendorController extends BaseController
     public function update($id = null)
     {
         log_message("info", "start method update on VendorController");
-        $vendorModel = new Vendor();
-        $vendor = $vendorModel->find($id);
-        if (!$vendor) {
-            throw new Exception("vendor not found");
-        }
         try {
+            $vendorModel = new Vendor();
+            $vendor = $vendorModel->find($id);
+            if (!$vendor) {
+                throw new Exception("vendor not found");
+            }
             $request = [
                 'id' => $id,
                 'vendor_name' => $this->request->getVar('vendor_name'),
@@ -116,12 +116,33 @@ class VendorController extends BaseController
             $vendor["npwp"] = $request['npwp'];
 
 
-            $modelActivity = new Vendor();
-            $modelActivity->save($vendor);
+            $vendorModel = new Vendor();
+            $vendorModel->save($vendor);
 
 
             log_message("info", "end method update on VendorController");
             return Response::apiResponse("success update vendor", $vendor);
+        } catch (Throwable $th) {
+            log_message("warning", $th->getMessage());
+            return Response::apiResponse($th->getMessage(), null, 400);
+        }
+    }
+
+    public function delete($id = null)
+    {
+        log_message("info", "start method delete on VendorController");
+        log_message("info", $id);
+        try {
+            $vendorModel = new Vendor();
+            $vendor = $vendorModel->find($id);
+            if (!$vendor) {
+                throw new Exception("vendor not found");
+            }
+
+            $vendorModel->delete($id);
+
+            log_message("info", "end method delete on VendorController");
+            return Response::apiResponse("success delete vendor", null);
         } catch (Throwable $th) {
             log_message("warning", $th->getMessage());
             return Response::apiResponse($th->getMessage(), null, 400);
