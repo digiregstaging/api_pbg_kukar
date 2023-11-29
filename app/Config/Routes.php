@@ -12,7 +12,7 @@ $routes->group('api', static function ($routes) {
         $routes->group('vendors', static function ($routes) {
             $routes->delete('(:num)', 'Api\VendorController::delete/$1');
             $routes->post('/', 'Api\VendorController::store');
-            $routes->get('/', 'Api\StudentController::index');
+            $routes->get('/', 'Api\VendorController::getAll');
             $routes->get('(:num)', 'Api\VendorController::get/$1');
             $routes->put('(:num)', 'Api\VendorController::update/$1');
         });

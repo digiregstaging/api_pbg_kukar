@@ -167,4 +167,19 @@ class VendorController extends BaseController
             return Response::apiResponse($th->getMessage(), null, 400);
         }
     }
+
+    public function getAll()
+    {
+        log_message("info", "start method getAll on VendorController");
+        try {
+            $vendorModel = new Vendor();
+            $vendor = $vendorModel->findAll();
+
+            log_message("info", "end method getAll on VendorController");
+            return Response::apiResponse("success getAll vendor", $vendor);
+        } catch (Throwable $th) {
+            log_message("warning", $th->getMessage());
+            return Response::apiResponse($th->getMessage(), null, 400);
+        }
+    }
 }
