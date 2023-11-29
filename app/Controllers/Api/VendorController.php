@@ -148,4 +148,23 @@ class VendorController extends BaseController
             return Response::apiResponse($th->getMessage(), null, 400);
         }
     }
+
+    public function get($id = null)
+    {
+        log_message("info", "start method get on VendorController");
+        log_message("info", $id);
+        try {
+            $vendorModel = new Vendor();
+            $vendor = $vendorModel->find($id);
+            if (!$vendor) {
+                throw new Exception("vendor not found");
+            }
+
+            log_message("info", "end method get on VendorController");
+            return Response::apiResponse("success get vendor", $vendor);
+        } catch (Throwable $th) {
+            log_message("warning", $th->getMessage());
+            return Response::apiResponse($th->getMessage(), null, 400);
+        }
+    }
 }
