@@ -16,5 +16,13 @@ $routes->group('api', static function ($routes) {
             $routes->get('(:num)', 'Api\VendorController::get/$1');
             $routes->put('(:num)', 'Api\VendorController::update/$1');
         });
+        
+        $routes->group('budgets', static function ($routes) {
+            $routes->delete('(:num)', 'Api\BudgetController::delete/$1');
+            $routes->post('/', 'Api\BudgetController::store');
+            $routes->get('/', 'Api\BudgetController::getAll');
+            $routes->get('(:num)', 'Api\BudgetController::get/$1');
+            $routes->put('(:num)', 'Api\BudgetController::update/$1');
+        });
     });
 });
