@@ -18,7 +18,7 @@ class CreateBudgetTable extends Migration
                 'type' => 'VARCHAR',
             ],
             'year' => [
-                'type' => 'DATETIME',
+                'type' => 'INT',
             ],
             'value' => [
                 'type' => 'BIGINT',
