@@ -32,5 +32,13 @@ $routes->group('api', static function ($routes) {
             $routes->get('(:num)', 'Api\ProgramController::get/$1');
             $routes->put('(:num)', 'Api\ProgramController::update/$1');
         });
+
+        $routes->group('users', static function ($routes) {
+            $routes->delete('(:num)', 'Api\UserController::delete/$1');
+            $routes->post('/', 'Api\UserController::store');
+            $routes->get('/', 'Api\UserController::getAll');
+            $routes->get('(:num)', 'Api\UserController::get/$1');
+            $routes->put('(:num)', 'Api\UserController::update/$1');
+        });
     });
 });
