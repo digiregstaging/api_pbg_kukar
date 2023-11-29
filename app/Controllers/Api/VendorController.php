@@ -5,6 +5,7 @@ namespace App\Controllers\Api;
 use App\Controllers\BaseController;
 use App\Helpers\Response;
 use App\Models\Vendor;
+use Exception;
 use Throwable;
 
 class VendorController extends BaseController
@@ -37,7 +38,7 @@ class VendorController extends BaseController
 
             if (!$this->validateData($request, $rule)) {
                 log_message("info", "validation error method store on VendorController");
-                return Response::apiResponse("failed create vendo", $this->validator->getErrors(), 422);
+                return Response::apiResponse("failed create vendor", $this->validator->getErrors(), 422);
             }
 
 
@@ -54,8 +55,8 @@ class VendorController extends BaseController
 
             $modelActivity = new Vendor();
             $modelActivity->insert($data);
-            
-            
+
+
             $data["id"] = $modelActivity->getInsertID();
 
             log_message("info", "end method store on VendorController");
@@ -66,92 +67,64 @@ class VendorController extends BaseController
         }
     }
 
-    public function index()
+    public function update($id = null)
     {
-        try {
-            $user_id = $this->request->getGet('user_id');
-            $limit_by_day = $this->request->getGet('limit_by_day');
-            $object_activity = $this->request->getGet('object_activity');
-            $role = $this->request->getGet('role');
-
-            $db = \Config\Database::connect();
-            $activity = $db->table("activity")
-                ->select("activity.*, users.username, users.name, users.role")
-                ->join("users", "users.id = activity.user_id");
-
-            if ($limit_by_day) {
-                $activity = $activity->where('activity.created_at >=', date('Y-m-d', strtotime('-' . $limit_by_day . ' days', strtotime(date('Y-m-d')))))
-                    ->where('activity.created_at <=', date('Y-m-d H:i:s'));
-            }
-
-            if ($user_id) {
-                $activity = $activity->where("activity.user_id", $user_id);
-            }
-
-            if ($object_activity) {
-                $activity = $activity->where("activity.object_activity", $object_activity);
-            }
-
-            if ($role) {
-                $activity = $activity->where("users.role", $role);
-            }
-
-            $activity = $activity->orderBy("activity.created_at", "desc")
-                ->get()
-                ->getResultArray();
-
-            return Response::apiResponse("success get all activity", $activity);
-        } catch (\Throwable $th) {
-            return Response::apiResponse($th->getMessage(), [], 400);
+        log_message("info", "start method update on VendorController");
+        $vendorModel = new Vendor();
+        $vendor = $vendorModel->find($id);
+        if (!$vendor) {
+            throw new Exception("vendor not found");
         }
-    }
-
-    public function getLineChartActivity()
-    {
         try {
-            $object_activity = [
-                "login" => 0,
-                "logout" => 0,
-                "practice" => 0,
-                "course" => 0,
-                "cheatsheet" => 0,
-                "teacher" => 0,
-                "student" => 0
+            $request = [
+                'id' => $id,
+                'vendor_name' => $this->request->getVar('vendor_name'),
+                'director' => $this->request->getVar('director'),
+                'address' => $this->request->getVar('address'),
+                'kbli_code' => $this->request->getVar('kbli_code'),
+                'phone' => $this->request->getVar('phone'),
+                'email' => $this->request->getVar('email'),
+                'npwp' => $this->request->getVar('npwp'),
             ];
 
-            $db = \Config\Database::connect();
-
-            $query = $db->table('activity')
-                ->select('*, DATE(activity.created_at) as date')
-                ->where('created_at >=', date('Y-m-d', strtotime('-3 months', strtotime(date('Y-m-d')))))
-                ->where('created_at <=', date('Y-m-d H:i:s'))
-                ->where("object_activity !=", "");
-
-            $results = $query->get()->getResultArray();
+            log_message("info", json_encode($request));
 
 
-            $response = [];
-            foreach ($results as $key => $value) {
-                if (!isset($response[$value["date"]])) {
-                    $response[$value["date"]] = [
-                        "login" => 0,
-                        "logout" => 0,
-                        "practice" => 0,
-                        "course" => 0,
-                        "cheatsheet" => 0,
-                        "teacher" => 0,
-                        "student" => 0
-                    ];
-                }
+            $rule = [
+                "id" => "required",
+                'vendor_name' => 'required|string',
+                "director" => "required|string",
+                "address" => "required",
+                "kbli_code" => "required|string|is_unique[vendors.kbli_code,id,{id}]",
+                "phone" => "required|string|is_unique[vendors.phone,id,{id}]",
+                "email" => "required|valid_email|is_unique[vendors.email,id,{id}]",
+                "npwp" => "required|string|is_unique[vendors.npwp,id,{id}]",
+            ];
 
-                if (isset($object_activity[$value["object_activity"]])) {
-                    $response[$value["date"]][$value["object_activity"]] += 1;
-                }
+            if (!$this->validateData($request, $rule)) {
+                log_message("info", "validation error method update on VendorController");
+                return Response::apiResponse("failed update vendor", $this->validator->getErrors(), 422);
             }
 
-            return Response::apiResponse("success get data for line chart activity", $response);
-        } catch (\Throwable $th) {
-            return Response::apiResponse($th->getMessage(), [], 400);
+
+            $vendor["vendor_name"] = $request['vendor_name'];
+            $vendor["director"] = $request['director'];
+            $vendor["address"] = $request['address'];
+            $vendor["kbli_code"] = $request['kbli_code'];
+            $vendor["phone"] = $request['phone'];
+            $vendor["email"] = $request['email'];
+            $vendor["npwp"] = $request['npwp'];
+
+
+            $modelActivity = new Vendor();
+            $modelActivity->save($vendor);
+
+
+            log_message("info", "end method update on VendorController");
+            return Response::apiResponse("success update vendor", $vendor);
+        } catch (Throwable $th) {
+            log_message("warning", $th->getMessage());
+            return Response::apiResponse($th->getMessage(), null, 400);
         }
     }
 }

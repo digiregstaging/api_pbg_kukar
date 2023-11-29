@@ -14,7 +14,7 @@ $routes->group('api', static function ($routes) {
             $routes->post('/', 'Api\VendorController::store');
             $routes->get('/', 'Api\StudentController::index');
             $routes->get('(:num)', 'Api\StudentController::show/$1');
-            $routes->put('(:num)', 'Api\StudentController::update/$1');
+            $routes->put('(:num)', 'Api\VendorController::update/$1');
         });
     });
 });
