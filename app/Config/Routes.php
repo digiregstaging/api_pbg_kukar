@@ -24,5 +24,13 @@ $routes->group('api', static function ($routes) {
             $routes->get('(:num)', 'Api\BudgetController::get/$1');
             $routes->put('(:num)', 'Api\BudgetController::update/$1');
         });
+
+        $routes->group('programs', static function ($routes) {
+            $routes->delete('(:num)', 'Api\ProgramController::delete/$1');
+            $routes->post('/', 'Api\ProgramController::store');
+            $routes->get('/', 'Api\ProgramController::getAll');
+            $routes->get('(:num)', 'Api\ProgramController::get/$1');
+            $routes->put('(:num)', 'Api\ProgramController::update/$1');
+        });
     });
 });
