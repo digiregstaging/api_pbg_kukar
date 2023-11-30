@@ -120,8 +120,6 @@ class UserController extends BaseController
             $user["phone"] = $request['phone'];
             $user["email"] = $request['email'];
 
-
-            $userModel = new User();
             $userModel->save($user);
 
 

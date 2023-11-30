@@ -98,8 +98,6 @@ class ProgramController extends BaseController
             $program["sub_activity"] = $request['sub_activity'];
             $program["description"] = $request['description'];
 
-
-            $programModel = new Program();
             $programModel->save($program);
 
 

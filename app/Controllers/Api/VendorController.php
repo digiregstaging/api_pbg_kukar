@@ -115,8 +115,6 @@ class VendorController extends BaseController
             $vendor["email"] = $request['email'];
             $vendor["npwp"] = $request['npwp'];
 
-
-            $vendorModel = new Vendor();
             $vendorModel->save($vendor);
 
 

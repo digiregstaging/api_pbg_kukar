@@ -98,8 +98,6 @@ class BudgetController extends BaseController
             $budget["value"] = $request['value'];
             $budget["description"] = $request['description'];
 
-
-            $budgetModel = new Budget();
             $budgetModel->save($budget);
 
 

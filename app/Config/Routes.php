@@ -42,6 +42,14 @@ $routes->group('api', static function ($routes) {
                 $routes->put('(:num)', 'Api\UserController::update/$1');
             });
 
+            $routes->group('projects', static function ($routes) {
+                $routes->delete('(:num)', 'Api\ProjectController::delete/$1');
+                $routes->post('/', 'Api\ProjectController::store');
+                $routes->get('/', 'Api\ProjectController::getAll');
+                $routes->get('(:num)', 'Api\ProjectController::get/$1');
+                $routes->put('(:num)', 'Api\ProjectController::update/$1');
+            });
+
 
             $routes->post('auth/logout', 'Api\AuthController::logout');
         });
