@@ -40,5 +40,9 @@ $routes->group('api', static function ($routes) {
             $routes->get('(:num)', 'Api\UserController::get/$1');
             $routes->put('(:num)', 'Api\UserController::update/$1');
         });
+
+        $routes->group('auth', static function ($routes) {
+            $routes->post('login', 'Api\AuthController::login');
+        });
     });
 });
