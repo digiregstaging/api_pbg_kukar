@@ -15,7 +15,7 @@ class CreateTableProjectProgress extends Migration
                 'auto_increment' => true,
             ],
             'step' => [
-                'type' => 'VARCHAR',
+                'type' => 'INT',
             ],
             'quality' => [
                 'type' => 'INT',
@@ -34,6 +34,7 @@ class CreateTableProjectProgress extends Migration
         $this->forge->addKey('id', true);
         $this->forge->createTable('project_progress');
         $this->forge->addForeignKey('project_id', 'projects', 'id', 'CASCADE', 'CASCADE');
+        $this->db->query("CREATE INDEX project_progress_step_index ON project_progress(step)");
     }
 
     public function down()
