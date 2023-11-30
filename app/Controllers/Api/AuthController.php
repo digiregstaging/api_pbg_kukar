@@ -79,4 +79,28 @@ class AuthController extends BaseController
             return Response::apiResponse($th->getMessage(), null, 400);
         }
     }
+
+
+    public function logout()
+    {
+        log_message("info", "start method logout on AuthController");
+        try {
+            $modelUser = new User();
+            $user_login = $this->request->user;
+
+            $user = $modelUser->where("token", $user_login["token"])->first();
+
+            if ($user) {
+                $user["token"] = null;
+                $modelUser->save($user);
+            }
+
+
+            log_message("info", "end method logout on AuthController");
+            return Response::apiResponse("success logout", null);
+        } catch (Throwable $th) {
+            log_message("warning", $th->getMessage());
+            return Response::apiResponse($th->getMessage(), null, 400);
+        }
+    }
 }
