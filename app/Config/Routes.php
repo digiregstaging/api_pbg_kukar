@@ -50,6 +50,13 @@ $routes->group('api', static function ($routes) {
                 $routes->put('(:num)', 'Api\ProjectController::update/$1');
             });
 
+            $routes->group('vendor-history', static function ($routes) {
+                $routes->delete('(:num)', 'Api\VendorHistoryController::delete/$1');
+                $routes->post('/', 'Api\VendorHistoryController::store');
+                $routes->get('/', 'Api\VendorHistoryController::getAll');
+                $routes->get('(:num)', 'Api\VendorHistoryController::get/$1');
+                $routes->put('(:num)', 'Api\VendorHistoryController::update/$1');
+            });
 
             $routes->post('auth/logout', 'Api\AuthController::logout');
         });
