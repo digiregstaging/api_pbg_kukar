@@ -58,6 +58,14 @@ $routes->group('api', static function ($routes) {
                 $routes->put('(:num)', 'Api\VendorHistoryController::update/$1');
             });
 
+            $routes->group('project-progress', static function ($routes) {
+                $routes->delete('(:num)', 'Api\ProjectProgressController::delete/$1');
+                $routes->post('/', 'Api\ProjectProgressController::store');
+                $routes->get('/', 'Api\ProjectProgressController::getAll');
+                $routes->get('(:num)', 'Api\ProjectProgressController::get/$1');
+                $routes->put('(:num)', 'Api\ProjectProgressController::update/$1');
+            });
+
             $routes->post('auth/logout', 'Api\AuthController::logout');
         });
         $routes->post('auth/login', 'Api\AuthController::login');
