@@ -66,6 +66,14 @@ $routes->group('api', static function ($routes) {
                 $routes->put('(:num)', 'Api\ProjectProgressController::update/$1');
             });
 
+            $routes->group('project-payments', static function ($routes) {
+                $routes->delete('(:num)', 'Api\ProjectPaymentController::delete/$1');
+                $routes->post('/', 'Api\ProjectPaymentController::store');
+                $routes->get('/', 'Api\ProjectPaymentController::getAll');
+                $routes->get('(:num)', 'Api\ProjectPaymentController::get/$1');
+                $routes->put('(:num)', 'Api\ProjectPaymentController::update/$1');
+            });
+
             $routes->post('auth/logout', 'Api\AuthController::logout');
         });
         $routes->post('auth/login', 'Api\AuthController::login');

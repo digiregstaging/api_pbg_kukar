@@ -15,7 +15,7 @@ class CreateProjectPaymentTable extends Migration
                 'auto_increment' => true,
             ],
             'termin' => [
-                'type' => 'VARCHAR',
+                'type' => 'INT',
             ],
             'quality_pay' => [
                 'type' => 'INT',
@@ -40,6 +40,8 @@ class CreateProjectPaymentTable extends Migration
         $this->forge->addKey('id', true);
         $this->forge->createTable('project_payments');
         $this->forge->addForeignKey('project_id', 'projects', 'id', 'CASCADE', 'CASCADE');
+        $this->db->query("CREATE INDEX project_payments_termin_index ON project_payments(termin)");
+        $this->db->query("CREATE INDEX project_payments_status_index ON project_payments(status)");
     }
 
     public function down()
