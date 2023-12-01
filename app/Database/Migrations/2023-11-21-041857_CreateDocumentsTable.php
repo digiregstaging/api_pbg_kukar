@@ -38,6 +38,7 @@ class CreateDocumentsTable extends Migration
         $this->forge->addKey('id', true);
         $this->forge->createTable('documents_tbl');
         $this->db->query("CREATE INDEX additional_data_id_index ON documents_tbl(additional_data_id)");
+        $this->db->query("CREATE INDEX type_index ON documents_tbl(type)");
     }
 
     public function down()

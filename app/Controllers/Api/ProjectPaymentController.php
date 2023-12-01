@@ -52,12 +52,15 @@ class ProjectPaymentController extends BaseController
             }
 
 
-            $status = isset(ProjectPayment::$status[$request["status"]]) ? $request["status"] : 0;
+            if (!isset(ProjectPayment::$status[$request["status"]])) {
+                throw new Exception("invalid status");
+            }
+
             $data = [
                 'termin' => $request['termin'],
                 'quality_pay' => $request["quality_pay"],
                 'fee_pay' => $request['fee_pay'],
-                'status' => $status,
+                'status' => $request["status"],
                 'project_id' => $request['project_id'],
             ];
 
@@ -135,12 +138,14 @@ class ProjectPaymentController extends BaseController
                 throw new Exception("project payment for this project already exists on termin " . $request["termin"]);
             }
 
-            $status = isset(ProjectPayment::$status[$request["status"]]) ? $request["status"] : 0;
+            if (!isset(ProjectPayment::$status[$request["status"]])) {
+                throw new Exception("invalid status");
+            }
 
             $projectPayment["termin"] = $request['termin'];
             $projectPayment["quality_pay"] = $request['quality_pay'];
             $projectPayment["fee_pay"] = $request['fee_pay'];
-            $projectPayment["status"] = $status;
+            $projectPayment["status"] = $request["status"];
             $projectPayment["project_id"] = $request['project_id'];
             $projectPaymentModel->save($projectPayment);
 

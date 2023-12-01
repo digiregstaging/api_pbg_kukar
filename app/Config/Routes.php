@@ -74,6 +74,14 @@ $routes->group('api', static function ($routes) {
                 $routes->put('(:num)', 'Api\ProjectPaymentController::update/$1');
             });
 
+            $routes->group('documents', static function ($routes) {
+                // $routes->delete('(:num)', 'Api\DocumentController::delete/$1');
+                $routes->post('/', 'Api\DocumentController::store');
+                // $routes->get('/', 'Api\DocumentController::getAll');
+                // $routes->get('(:num)', 'Api\DocumentController::get/$1');
+                // $routes->put('(:num)', 'Api\DocumentController::update/$1');
+            });
+
             $routes->post('auth/logout', 'Api\AuthController::logout');
         });
         $routes->post('auth/login', 'Api\AuthController::login');
