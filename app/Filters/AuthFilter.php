@@ -46,6 +46,8 @@ class AuthFilter implements FilterInterface
             return Response::apiResponse("token required", null, 401);
         }
 
+        log_message("info", $token);
+
         try {
             $credentials = JWT::decode($token, new Key($key, 'HS256'));
         } catch (ExpiredException $e) {
