@@ -22,6 +22,7 @@ class UserController extends BaseController
                 'role' => $this->request->getVar('role'),
                 'phone' => $this->request->getVar('phone'),
                 'email' => $this->request->getVar('email'),
+                'position' => $this->request->getVar('position'),
             ];
 
             log_message("info", json_encode($request));
@@ -34,6 +35,7 @@ class UserController extends BaseController
                 "role" => "required|integer",
                 "phone" => "required|string|is_unique[users.phone]",
                 "email" => "required|valid_email|is_unique[users.email]",
+                "position" => "required|string",
             ];
 
             if (!$this->validateData($request, $rule)) {
@@ -54,6 +56,7 @@ class UserController extends BaseController
                 'role' => $request["role"],
                 'phone' => $request['phone'],
                 'email' => $request['email'],
+                'position' => $request['position'],
             ];
 
 
@@ -90,6 +93,7 @@ class UserController extends BaseController
                 'role' => $this->request->getVar('role'),
                 'phone' => $this->request->getVar('phone'),
                 'email' => $this->request->getVar('email'),
+                'position' => $this->request->getVar('position'),
             ];
 
             log_message("info", json_encode($request));
@@ -104,6 +108,7 @@ class UserController extends BaseController
                 "role" => "required|integer",
                 "phone" => "required|string|is_unique[users.phone,id,{id}]",
                 "email" => "required|valid_email|is_unique[users.email,id,{id}]",
+                "position" => "required|string",
             ];
 
             if (!$this->validateData($request, $rule)) {
@@ -119,6 +124,7 @@ class UserController extends BaseController
             $user["role"] = $request['role'];
             $user["phone"] = $request['phone'];
             $user["email"] = $request['email'];
+            $user["position"] = $request['position'];
 
             $userModel->save($user);
 
@@ -163,6 +169,8 @@ class UserController extends BaseController
                 throw new Exception("user not found");
             }
 
+            $role_name = isset(User::$role[$user["role"]]) ? User::$role[$user["role"]] : "";
+            $user["role_name"] = $role_name;
             log_message("info", "end method get on UserController");
             return Response::apiResponse("success get user", $user);
         } catch (Throwable $th) {
@@ -178,8 +186,16 @@ class UserController extends BaseController
             $userModel = new User();
             $user = $userModel->findAll();
 
+            $newListUser = [];
+
+            foreach ($user as $key => $value) {
+                $role_name = isset(User::$role[$user["role"]]) ? User::$role[$user["role"]] : "";
+                $user["role_name"] = $role_name;
+                $newListUser[] = $user;
+            }
+
             log_message("info", "end method getAll on UserController");
-            return Response::apiResponse("success getAll user", $user);
+            return Response::apiResponse("success getAll user", $newListUser);
         } catch (Throwable $th) {
             log_message("warning", $th->getMessage());
             return Response::apiResponse($th->getMessage(), null, 400);

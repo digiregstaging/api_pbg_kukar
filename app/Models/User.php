@@ -17,6 +17,7 @@ class User extends Model
         "phone",
         "email",
         "token",
+        "position"
     ];
 
     protected $useTimestamps = true;
@@ -25,7 +26,7 @@ class User extends Model
     protected $updatedField  = 'updated_at';
 
     public static $role = [
-        "1" => "supervisor",
-        "2" => "user",
+        "1" => "Administrator",
+        "2" => "User",
     ];
 }
