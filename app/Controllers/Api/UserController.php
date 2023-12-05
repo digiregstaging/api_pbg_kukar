@@ -87,7 +87,6 @@ class UserController extends BaseController
             $request = [
                 'id' => $id,
                 'username' => $this->request->getVar('username'),
-                'password' => $this->request->getVar('password'),
                 'name' => $this->request->getVar('name'),
                 'job' => $this->request->getVar('job'),
                 'role' => $this->request->getVar('role'),
@@ -102,7 +101,6 @@ class UserController extends BaseController
             $rule = [
                 "id" => "required",
                 'username' => 'required|is_unique[users.username,id,{id}]',
-                "password" => "required|min_length[8]",
                 "name" => "required|string",
                 "job" => "required|string",
                 "role" => "required|integer",
@@ -118,7 +116,6 @@ class UserController extends BaseController
 
 
             $user["username"] = $request['username'];
-            $user["password"] = password_hash($request['password'], PASSWORD_DEFAULT);
             $user["name"] = $request['name'];
             $user["job"] = $request['job'];
             $user["role"] = $request['role'];
