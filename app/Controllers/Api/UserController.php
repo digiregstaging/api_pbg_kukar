@@ -189,7 +189,7 @@ class UserController extends BaseController
             $newListUser = [];
 
             foreach ($user as $key => $value) {
-                $role_name = isset(User::$role[$user["role"]]) ? User::$role[$user["role"]] : "";
+                $role_name = isset(User::$role[$value["role"]]) ? User::$role[$value["role"]] : "";
                 $user["role_name"] = $role_name;
                 $newListUser[] = $user;
             }
