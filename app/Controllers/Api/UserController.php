@@ -191,7 +191,7 @@ class UserController extends BaseController
             foreach ($user as $key => $value) {
                 $role_name = isset(User::$role[$value["role"]]) ? User::$role[$value["role"]] : "";
                 $user["role_name"] = $role_name;
-                $newListUser[] = $user;
+                $newListUser[] = $value;
             }
 
             log_message("info", "end method getAll on UserController");
