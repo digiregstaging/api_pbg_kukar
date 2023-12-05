@@ -237,7 +237,17 @@ class ProjectController extends BaseController
     {
         log_message("info", "start method getAll on ProjectController");
         try {
+            $request = [
+                'vendor_id' => $this->request->getGet('vendor_id'),
+            ];
+
+            log_message("info", json_encode($request));
             $projectModel = new Project();
+
+            if ($request["vendor_id"]) {
+                $projectModel->where("vendor_id", $request["vendor_id"]);
+            }
+
             $project = $projectModel->findAll();
 
             log_message("info", "end method getAll on ProjectController");
