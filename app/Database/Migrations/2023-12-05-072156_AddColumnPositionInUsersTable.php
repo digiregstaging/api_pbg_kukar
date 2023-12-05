@@ -18,6 +18,6 @@ class AddColumnPositionInUsersTable extends Migration
 
     public function down()
     {
-        $this->forge->dropColumn('teachers', ["position"]);
+        $this->forge->dropColumn('users', ["position"]);
     }
 }
