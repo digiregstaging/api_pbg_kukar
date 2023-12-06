@@ -45,4 +45,10 @@ class Project extends Model
 
         return $remain;
     }
+
+    public static $status = [
+        "1" => "Pemilihan",
+        "2" => "Berlangsung",
+        "3" => "Selesai"
+    ];
 }

@@ -243,6 +243,8 @@ class ProjectController extends BaseController
                 throw new Exception("project not found");
             }
 
+            $project["status_name"] = isset(Project::$status[$project["status"]]) ? Project::$status[$project["status"]] : "";
+
             log_message("info", "end method get on ProjectController");
             return Response::apiResponse("success get project", $project);
         } catch (Throwable $th) {
@@ -268,8 +270,14 @@ class ProjectController extends BaseController
 
             $project = $projectModel->findAll();
 
+            $newListProject = [];
+            foreach ($project as $key => $value) {
+                $value["status_name"] = isset(Project::$status[$value["status"]]) ? Project::$status[$value["status"]] : "";
+                $newListProject[] = $value;
+            }
+
             log_message("info", "end method getAll on ProjectController");
-            return Response::apiResponse("success getAll project", $project);
+            return Response::apiResponse("success getAll project", $newListProject);
         } catch (Throwable $th) {
             log_message("warning", $th->getMessage());
             return Response::apiResponse($th->getMessage(), null, 400);
