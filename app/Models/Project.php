@@ -18,6 +18,10 @@ class Project extends Model
         "user_id",
         "budget_id",
         "program_id",
+        "status",
+        "contract_value",
+        "project_code",
+        "pugu"
     ];
 
     protected $useTimestamps = true;

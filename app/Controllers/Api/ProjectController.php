@@ -20,7 +20,7 @@ class ProjectController extends BaseController
         try {
             $request = [
                 'project_name' => $this->request->getVar('project_name'),
-                'responsible' => $this->request->getVar('responsible'),
+                // 'responsible' => $this->request->getVar('responsible'),
                 'start_date' => $this->request->getVar('start_date'),
                 'end_date' => $this->request->getVar('end_date'),
                 'work_day' => $this->request->getVar('work_day'),
@@ -28,13 +28,16 @@ class ProjectController extends BaseController
                 'user_id' => $this->request->getVar('user_id'),
                 'budget_id' => $this->request->getVar('budget_id'),
                 'program_id' => $this->request->getVar('program_id'),
+                'contract_value' => $this->request->getVar('contract_value'),
+                'project_code' => $this->request->getVar('project_code'),
+                'pugu' => $this->request->getVar('pugu'),
             ];
 
             log_message("info", json_encode($request));
 
             $rule = [
                 'project_name' => 'required|string',
-                "responsible" => "required|string",
+                // "responsible" => "required|string",
                 "start_date" => "required|string",
                 "end_date" => "required|string",
                 "work_day" => "required|integer",
@@ -42,6 +45,9 @@ class ProjectController extends BaseController
                 "user_id" => "required|integer",
                 "budget_id" => "required|integer",
                 "program_id" => "required|integer",
+                "contract_value" => "required|integer",
+                "project_code" => "required|string",
+                "pugu" => "required|string",
             ];
 
             if (!$this->validateData($request, $rule)) {
@@ -78,7 +84,7 @@ class ProjectController extends BaseController
 
             $data = [
                 'project_name' => $request['project_name'],
-                'responsible' => $request["responsible"],
+                'responsible' => $user["name"],
                 'start_date' => $start_date,
                 'end_date' => $end_date,
                 'work_day' => $request['work_day'],
@@ -86,6 +92,9 @@ class ProjectController extends BaseController
                 'user_id' => $request['user_id'],
                 'budget_id' => $request['budget_id'],
                 'program_id' => $request['program_id'],
+                'contract_value' => $request['contract_value'],
+                'project_code' => $request['project_code'],
+                'pugu' => $request['pugu'],
             ];
 
 
@@ -116,7 +125,7 @@ class ProjectController extends BaseController
             $request = [
                 'id' => $id,
                 'project_name' => $this->request->getVar('project_name'),
-                'responsible' => $this->request->getVar('responsible'),
+                // 'responsible' => $this->request->getVar('responsible'),
                 'start_date' => $this->request->getVar('start_date'),
                 'end_date' => $this->request->getVar('end_date'),
                 'work_day' => $this->request->getVar('work_day'),
@@ -124,13 +133,16 @@ class ProjectController extends BaseController
                 'user_id' => $this->request->getVar('user_id'),
                 'budget_id' => $this->request->getVar('budget_id'),
                 'program_id' => $this->request->getVar('program_id'),
+                'contract_value' => $this->request->getVar('contract_value'),
+                'project_code' => $this->request->getVar('project_code'),
+                'pugu' => $this->request->getVar('pugu'),
             ];
 
             log_message("info", json_encode($request));
 
             $rule = [
                 'project_name' => 'required|string',
-                "responsible" => "required|string",
+                // "responsible" => "required|string",
                 "start_date" => "required|string",
                 "end_date" => "required|string",
                 "work_day" => "required|integer",
@@ -138,6 +150,9 @@ class ProjectController extends BaseController
                 "user_id" => "required|integer",
                 "budget_id" => "required|integer",
                 "program_id" => "required|integer",
+                "contract_value" => "required|integer",
+                "project_code" => "required|string",
+                "pugu" => "required|string",
             ];
 
             if (!$this->validateData($request, $rule)) {
@@ -173,7 +188,7 @@ class ProjectController extends BaseController
             $end_date = date("Y-m-d H:i:s", strtotime($request["end_date"]));
 
             $project["project_name"] = $request['project_name'];
-            $project["responsible"] = $request['responsible'];
+            $project["responsible"] = $user["name"];
             $project["start_date"] = $start_date;
             $project["end_date"] = $end_date;
             $project["work_day"] = $request['work_day'];
@@ -181,6 +196,9 @@ class ProjectController extends BaseController
             $project["user_id"] = $request['user_id'];
             $project["budget_id"] = $request['budget_id'];
             $project["program_id"] = $request['program_id'];
+            $project["contract_value"] = $request['contract_value'];
+            $project["project_code"] = $request['project_code'];
+            $project["pugu"] = $request['pugu'];
 
 
             $projectModel->save($project);
