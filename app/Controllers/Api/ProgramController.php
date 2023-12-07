@@ -153,7 +153,27 @@ class ProgramController extends BaseController
     {
         log_message("info", "start method getAll on ProgramController");
         try {
+            $request = [
+                'program' => $this->request->getGet('program'),
+                'activity' => $this->request->getGet('activity'),
+                'sub_activity' => $this->request->getGet('sub_activity'),
+            ];
+
+            log_message("info", json_encode($request));
+
             $programModel = new Program();
+            if ($request["program"]) {
+                $programModel->like("program", $request["program"], 'both', null, true);
+            }
+
+            if ($request["activity"]) {
+                $programModel->like("activity", $request["activity"], 'both', null, true);
+            }
+
+            if ($request["sub_activity"]) {
+                $programModel->like("sub_activity", $request["sub_activity"], 'both', null, true);
+            }
+
             $program = $programModel->findAll();
 
             log_message("info", "end method getAll on ProgramController");
