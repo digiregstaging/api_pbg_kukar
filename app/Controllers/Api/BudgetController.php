@@ -25,7 +25,7 @@ class BudgetController extends BaseController
 
             $rule = [
                 'source' => 'required|string',
-                "year" => "required|string",
+                "year" => "required|integer",
                 "value" => "required|integer",
                 "description" => "required",
             ];
@@ -82,7 +82,7 @@ class BudgetController extends BaseController
             $rule = [
                 "id" => "required",
                 'source' => 'required|string',
-                "year" => "required|string",
+                "year" => "required|integer",
                 "value" => "required|integer",
                 "description" => "required",
             ];
