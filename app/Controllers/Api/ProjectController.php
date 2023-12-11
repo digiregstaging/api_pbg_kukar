@@ -268,7 +268,8 @@ class ProjectController extends BaseController
                 $projectModel->where("vendor_id", $request["vendor_id"]);
             }
 
-            $project = $projectModel->findAll();
+            $project = $projectModel->orderBy("id")
+                ->findAll();
 
             $newListProject = [];
             foreach ($project as $key => $value) {

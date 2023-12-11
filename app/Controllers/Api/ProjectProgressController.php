@@ -178,7 +178,8 @@ class ProjectProgressController extends BaseController
             if ($request["project_id"]) {
                 $projectProgressModel->where("project_id", $request["project_id"]);
             }
-            $projectProgress = $projectProgressModel->findAll();
+            $projectProgress = $projectProgressModel->orderBy("id")
+                ->findAll();
 
             log_message("info", "end method getAll on ProjectProgressController");
             return Response::apiResponse("success getAll project progress", $projectProgress);
