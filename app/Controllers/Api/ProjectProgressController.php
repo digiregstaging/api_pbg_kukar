@@ -18,14 +18,16 @@ class ProjectProgressController extends BaseController
             $request = [
                 'step' => $this->request->getVar('step'),
                 'quality' => $this->request->getVar('quality'),
+                'progress_in_percent' => $this->request->getVar('progress_in_percent'),
                 'project_id' => $this->request->getVar('project_id'),
             ];
 
             log_message("info", json_encode($request));
 
             $rule = [
-                'step' => 'required|integer',
-                "quality" => "required|integer",
+                'step' => 'required',
+                "quality" => "required|numeric",
+                "progress_in_percent" => "required|numeric",
                 "project_id" => "required|integer",
             ];
 
@@ -43,19 +45,11 @@ class ProjectProgressController extends BaseController
             $data = [
                 'step' => $request['step'],
                 'quality' => $request["quality"],
+                'progress_in_percent' => $request["progress_in_percent"],
                 'project_id' => $request['project_id'],
             ];
 
             $projectProgressModel = new ProjectProgress();
-
-            $isExistsprojectProgress = $projectProgressModel
-                ->where("project_id", $request["project_id"])
-                ->where("step", $request["step"])
-                ->first();
-
-            if ($isExistsprojectProgress) {
-                throw new Exception("project progress for this project already exists on step " . $request["step"]);
-            }
 
             $projectProgressModel->insert($data);
 

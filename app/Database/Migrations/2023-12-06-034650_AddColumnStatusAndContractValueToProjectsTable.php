@@ -11,7 +11,7 @@ class AddColumnStatusAndContractValueToProjectsTable extends Migration
         $this->forge->addColumn('projects', [
             'status' => [
                 'type'           => 'INT',
-                'default'          => 0
+                'default'          => 1
             ],
             "contract_value" => [
                 "type" => "INT",

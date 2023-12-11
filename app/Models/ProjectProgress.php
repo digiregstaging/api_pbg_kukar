@@ -11,6 +11,8 @@ class ProjectProgress extends Model
     protected $allowedFields = [
         "step",
         "quality",
+        "status",
+        "progress_in_percent",
         "project_id",
     ];
 
