@@ -116,10 +116,10 @@ class ProjectPaymentController extends BaseController
             $projectPayment["project_id"] = $request['project_id'];
             $projectPaymentModel->save($projectPayment);
 
-            $remain = Project::getRemainPayment($project);
-            if ($remain < 0) {
-                throw new Exception("invalid input fee pay");
-            }
+            // $remain = Project::getRemainPayment($project);
+            // if ($remain < 0) {
+            //     throw new Exception("invalid input fee pay");
+            // }
 
             log_message("info", "end method update on ProjectPaymentController");
             return Response::apiResponse("success update project payment", $projectPayment);

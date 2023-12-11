@@ -253,7 +253,10 @@ class ProjectController extends BaseController
                 $progress = $progress + $value["quality"] * $value["progress"];
             }
 
+            $remain = Project::getRemainPayment($project);
+
             $project["progress_quantity"] = $progress;
+            $project["paid"] = $project["contract_value"] = $remain;
 
 
             log_message("info", "end method get on ProjectController");
