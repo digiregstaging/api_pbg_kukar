@@ -18,7 +18,6 @@ class ProjectPaymentController extends BaseController
             $request = [
                 'termin' => $this->request->getVar('termin'),
                 'quality_pay' => $this->request->getVar('quality_pay'),
-                'fee_pay' => $this->request->getVar('fee_pay'),
                 'status' => $this->request->getVar('status'),
                 'project_id' => $this->request->getVar('project_id'),
             ];
@@ -26,9 +25,8 @@ class ProjectPaymentController extends BaseController
             log_message("info", json_encode($request));
 
             $rule = [
-                'termin' => 'required|integer',
-                "quality_pay" => "required|integer",
-                "fee_pay" => "required|integer",
+                'termin' => 'required|string',
+                "quality_pay" => "required|numeric",
                 "status" => "required|integer",
                 "project_id" => "required|integer",
             ];
@@ -59,21 +57,12 @@ class ProjectPaymentController extends BaseController
             $data = [
                 'termin' => $request['termin'],
                 'quality_pay' => $request["quality_pay"],
-                'fee_pay' => $request['fee_pay'],
+                'fee_pay' => 0,
                 'status' => $request["status"],
                 'project_id' => $request['project_id'],
             ];
 
             $projectPaymentModel = new ProjectPayment();
-
-            $isExistsprojectPayment = $projectPaymentModel
-                ->where("project_id", $request["project_id"])
-                ->where("termin", $request["termin"])
-                ->first();
-
-            if ($isExistsprojectPayment) {
-                throw new Exception("project payment for this project already exists on termin " . $request["termin"]);
-            }
 
             $projectPaymentModel->insert($data);
 
@@ -101,7 +90,6 @@ class ProjectPaymentController extends BaseController
                 'id' => $id,
                 'termin' => $this->request->getVar('termin'),
                 'quality_pay' => $this->request->getVar('quality_pay'),
-                'fee_pay' => $this->request->getVar('fee_pay'),
                 'status' => $this->request->getVar('status'),
                 'project_id' => $this->request->getVar('project_id'),
             ];
@@ -110,9 +98,8 @@ class ProjectPaymentController extends BaseController
 
 
             $rule = [
-                'termin' => 'required|integer',
-                "quality_pay" => "required|integer",
-                "fee_pay" => "required|integer",
+                'termin' => 'required|string',
+                "quality_pay" => "required|numeric",
                 "status" => "required|integer",
                 "project_id" => "required|integer",
             ];
@@ -128,15 +115,6 @@ class ProjectPaymentController extends BaseController
                 throw new Exception("project not found");
             }
 
-            $isExistsprojectPayment = $projectPaymentModel
-                ->where("project_id", $request["project_id"])
-                ->where("termin", $request["termin"])
-                ->where("id !=", $id)
-                ->first();
-
-            if ($isExistsprojectPayment) {
-                throw new Exception("project payment for this project already exists on termin " . $request["termin"]);
-            }
 
             if (!isset(ProjectPayment::$status[$request["status"]])) {
                 throw new Exception("invalid status");
@@ -144,7 +122,7 @@ class ProjectPaymentController extends BaseController
 
             $projectPayment["termin"] = $request['termin'];
             $projectPayment["quality_pay"] = $request['quality_pay'];
-            $projectPayment["fee_pay"] = $request['fee_pay'];
+            $projectPayment["fee_pay"] = 0;
             $projectPayment["status"] = $request["status"];
             $projectPayment["project_id"] = $request['project_id'];
             $projectPaymentModel->save($projectPayment);
