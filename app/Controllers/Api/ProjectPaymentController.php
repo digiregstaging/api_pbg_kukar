@@ -18,7 +18,7 @@ class ProjectPaymentController extends BaseController
             $request = [
                 'termin' => $this->request->getVar('termin'),
                 'quality_pay' => $this->request->getVar('quality_pay'),
-                'status' => $this->request->getVar('status'),
+                // 'status' => $this->request->getVar('status'),
                 'project_id' => $this->request->getVar('project_id'),
             ];
 
@@ -27,7 +27,7 @@ class ProjectPaymentController extends BaseController
             $rule = [
                 'termin' => 'required|string',
                 "quality_pay" => "required|numeric",
-                "status" => "required|integer",
+                // "status" => "required|integer",
                 "project_id" => "required|integer",
             ];
 
@@ -58,7 +58,7 @@ class ProjectPaymentController extends BaseController
                 'termin' => $request['termin'],
                 'quality_pay' => $request["quality_pay"],
                 'fee_pay' => 0,
-                'status' => $request["status"],
+                // 'status' => $request["status"],
                 'project_id' => $request['project_id'],
             ];
 
