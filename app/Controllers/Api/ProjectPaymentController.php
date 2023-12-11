@@ -42,13 +42,6 @@ class ProjectPaymentController extends BaseController
                 throw new Exception("project not found");
             }
 
-            $remain = Project::getRemainPayment($project);
-
-
-            if ($request["fee_pay"] > $remain) {
-                throw new Exception("offset payment fee");
-            }
-
 
             if (!isset(ProjectPayment::$status[$request["status"]])) {
                 throw new Exception("invalid status");
