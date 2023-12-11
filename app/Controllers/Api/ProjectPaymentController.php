@@ -206,8 +206,17 @@ class ProjectPaymentController extends BaseController
     {
         log_message("info", "start method getAll on ProjectPaymentController");
         try {
+            $request = [
+                'project_id' => $this->request->getGet('project_id'),
+            ];
+
+            log_message("info", json_encode($request));
             $projectPaymentModel = new ProjectPayment();
-            $projectPayment = $projectPaymentModel->findAll();
+            if ($request["project_id"]) {
+                $projectPaymentModel->where("project_id", $request["project_id"]);
+            }
+            $projectPayment = $projectPaymentModel->orderBy("id")
+                ->findAll();
 
             log_message("info", "end method getAll on ProjectPaymentController");
             return Response::apiResponse("success getAll project payment", $projectPayment);
