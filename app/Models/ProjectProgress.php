@@ -20,4 +20,10 @@ class ProjectProgress extends Model
     protected $dateFormat    = 'datetime';
     protected $createdField  = 'created_at';
     protected $updatedField  = 'updated_at';
+
+    public static $status = [
+        "1" => "Belum Mulai",
+        "2" => "Berlangsung",
+        "3" => "Selesai",
+    ];
 }

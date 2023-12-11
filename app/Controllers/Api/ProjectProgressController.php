@@ -187,4 +187,44 @@ class ProjectProgressController extends BaseController
             return Response::apiResponse($th->getMessage(), null, 400);
         }
     }
+
+    public function updateStatusProjectProgress($id = null)
+    {
+        log_message("info", "start method updateStatusProjectProgress on ProjectProgressController");
+        log_message("info", $id);
+        try {
+            $request = [
+                'status' => $this->request->getVar('status'),
+            ];
+
+            log_message("info", json_encode($request));
+
+
+            $rule = [
+                'status' => 'required|numeric',
+            ];
+
+            if (!$this->validateData($request, $rule)) {
+                log_message("info", "validation error method updateStatusProjectProgress on ProjectProgressController");
+                return Response::apiResponse("failed update status project progress", $this->validator->getErrors(), 422);
+            }
+
+
+            $projectProgressModel = new ProjectProgress();
+            $projectProgress = $projectProgressModel->find($id);
+            if (!$projectProgress) {
+                throw new Exception("project progress not found");
+            }
+
+            $projectProgress["status"] = isset(ProjectProgress::$status[$request["status"]]) ? $request["status"] : 0;
+
+            $projectProgressModel->save($projectProgress);
+
+            log_message("info", "end method updateStatusProjectProgress on ProjectProgressController");
+            return Response::apiResponse("success update status project progress", $projectProgress);
+        } catch (Throwable $th) {
+            log_message("warning", $th->getMessage());
+            return Response::apiResponse($th->getMessage(), null, 400);
+        }
+    }
 }

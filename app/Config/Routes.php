@@ -64,6 +64,7 @@ $routes->group('api', static function ($routes) {
                 $routes->get('/', 'Api\ProjectProgressController::getAll');
                 $routes->get('(:num)', 'Api\ProjectProgressController::get/$1');
                 $routes->put('(:num)', 'Api\ProjectProgressController::update/$1');
+                $routes->put('update-status/(:num)', 'Api\ProjectProgressController::updateStatusProjectProgress/$1');
             });
 
             $routes->group('project-payments', static function ($routes) {
