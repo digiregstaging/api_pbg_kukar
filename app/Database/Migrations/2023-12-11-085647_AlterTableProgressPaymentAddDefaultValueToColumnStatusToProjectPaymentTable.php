@@ -8,9 +8,9 @@ class AlterTableProgressPaymentAddDefaultValueToColumnStatusToProjectPaymentTabl
 {
     public function up()
     {
-        // $this->forge->dropColumn('project_payments', [
-        //     "status",
-        // ]);
+        $this->forge->dropColumn('project_payments', [
+            "status",
+        ]);
 
         $this->forge->addColumn('project_payments', [
             'status' => [
