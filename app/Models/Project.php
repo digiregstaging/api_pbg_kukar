@@ -31,16 +31,13 @@ class Project extends Model
 
     public static function getRemainPayment($project)
     {
-        $budgetModel = new Budget();
-        $budget = $budgetModel->find($project["budget_id"]);
-
         $projectPaymentModel = new ProjectPayment();
         $list_payment = $projectPaymentModel->where("project_id", $project["id"])
             ->findAll();
 
-        $remain = $budget["value"];
+        $remain = $project["contract_value"];
         foreach ($list_payment as $key => $value) {
-            $remain = $remain - $value["fee_pay"];
+            $remain = $remain - $value["quality_pay"] * $project["contract_value"];
         }
 
         return $remain;
