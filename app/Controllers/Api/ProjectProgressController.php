@@ -18,7 +18,7 @@ class ProjectProgressController extends BaseController
             $request = [
                 'step' => $this->request->getVar('step'),
                 'quality' => $this->request->getVar('quality'),
-                'progress_in_percent' => $this->request->getVar('progress_in_percent'),
+                'progress' => $this->request->getVar('progress'),
                 'project_id' => $this->request->getVar('project_id'),
             ];
 
@@ -27,7 +27,7 @@ class ProjectProgressController extends BaseController
             $rule = [
                 'step' => 'required',
                 "quality" => "required|numeric",
-                "progress_in_percent" => "required|numeric",
+                "progress" => "required|numeric",
                 "project_id" => "required|integer",
             ];
 
@@ -45,7 +45,7 @@ class ProjectProgressController extends BaseController
             $data = [
                 'step' => $request['step'],
                 'quality' => $request["quality"],
-                'progress_in_percent' => $request["progress_in_percent"],
+                'progress' => $request["progress"],
                 'project_id' => $request['project_id'],
             ];
 

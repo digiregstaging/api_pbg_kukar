@@ -12,7 +12,7 @@ class ProjectProgress extends Model
         "step",
         "quality",
         "status",
-        "progress_in_percent",
+        "progress",
         "project_id",
     ];
 
