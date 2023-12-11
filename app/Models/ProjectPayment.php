@@ -7,7 +7,8 @@ use CodeIgniter\Model;
 class ProjectPayment extends Model
 {
     public static $status = [
-        "1" => "paid"
+        "1" => "Unpaid",
+        "2" => "Paid",
     ];
 
     protected $table = 'project_payments';
