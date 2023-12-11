@@ -7,6 +7,7 @@ use App\Helpers\Response;
 use App\Models\Budget;
 use App\Models\Program;
 use App\Models\Project;
+use App\Models\ProjectProgress;
 use App\Models\User;
 use App\Models\Vendor;
 use Exception;
@@ -244,6 +245,16 @@ class ProjectController extends BaseController
             }
 
             $project["status_name"] = isset(Project::$status[$project["status"]]) ? Project::$status[$project["status"]] : "";
+
+            $progress = 0;
+            $projectProgressModel = new ProjectProgress();
+            $projectProgress = $projectProgressModel->where("project_id", $project["id"])->findAll();
+            foreach ($projectProgress as $key => $value) {
+                $progress = $progress + $value["quality"] * $value["progress"];
+            }
+
+            $project["progress_quantity"] = $progress;
+
 
             log_message("info", "end method get on ProjectController");
             return Response::apiResponse("success get project", $project);
