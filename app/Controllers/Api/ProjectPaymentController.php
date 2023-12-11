@@ -179,14 +179,25 @@ class ProjectPaymentController extends BaseController
 
             log_message("info", json_encode($request));
             $projectPaymentModel = new ProjectPayment();
+            $projectPaymentModel = $projectPaymentModel->select("project_payments.*, projects.contract_value")
+                ->join("projects", "projects.id = project_payments.project_id");
+
             if ($request["project_id"]) {
-                $projectPaymentModel->where("project_id", $request["project_id"]);
+                $projectPaymentModel->where("project_payments.project_id", $request["project_id"]);
             }
-            $projectPayment = $projectPaymentModel->orderBy("id")
+            $projectPayment = $projectPaymentModel
+                ->orderBy("id")
                 ->findAll();
 
+            $newProjectPaymet = [];
+
+            foreach ($projectPayment as $key => $value) {
+                $value["value"] = $value["quality_pay"] * $value["contract_value"];
+                $newProjectPaymet[] = $value;
+            }
+
             log_message("info", "end method getAll on ProjectPaymentController");
-            return Response::apiResponse("success getAll project payment", $projectPayment);
+            return Response::apiResponse("success getAll project payment", $newProjectPaymet);
         } catch (Throwable $th) {
             log_message("warning", $th->getMessage());
             return Response::apiResponse($th->getMessage(), null, 400);
