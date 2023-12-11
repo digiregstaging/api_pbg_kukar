@@ -43,10 +43,6 @@ class ProjectPaymentController extends BaseController
             }
 
 
-            if (!isset(ProjectPayment::$status[$request["status"]])) {
-                throw new Exception("invalid status");
-            }
-
             $data = [
                 'termin' => $request['termin'],
                 'quality_pay' => $request["quality_pay"],
