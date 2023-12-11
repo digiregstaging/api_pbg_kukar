@@ -168,7 +168,16 @@ class ProjectProgressController extends BaseController
     {
         log_message("info", "start method getAll on ProjectProgressController");
         try {
+            $request = [
+                'project_id' => $this->request->getGet('project_id'),
+            ];
+
+            log_message("info", json_encode($request));
+
             $projectProgressModel = new ProjectProgress();
+            if ($request["project_id"]) {
+                $projectProgressModel->where("project_id", $request["project_id"]);
+            }
             $projectProgress = $projectProgressModel->findAll();
 
             log_message("info", "end method getAll on ProjectProgressController");
