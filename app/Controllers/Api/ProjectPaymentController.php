@@ -203,4 +203,44 @@ class ProjectPaymentController extends BaseController
             return Response::apiResponse($th->getMessage(), null, 400);
         }
     }
+
+    public function updateStatusProjectPayment($id = null)
+    {
+        log_message("info", "start method updateStatusProjectPayment on ProjectPaymentController");
+        log_message("info", $id);
+        try {
+            $request = [
+                'status' => $this->request->getVar('status'),
+            ];
+
+            log_message("info", json_encode($request));
+
+
+            $rule = [
+                'status' => 'required|numeric',
+            ];
+
+            if (!$this->validateData($request, $rule)) {
+                log_message("info", "validation error method updateStatusProjectPayment on ProjectPaymentController");
+                return Response::apiResponse("failed update status project payment", $this->validator->getErrors(), 422);
+            }
+
+
+            $projectPaymentModel = new ProjectPayment();
+            $projectPayment = $projectPaymentModel->find($id);
+            if (!$projectPayment) {
+                throw new Exception("project payment not found");
+            }
+
+            $projectPayment["status"] = isset(ProjectPayment::$status[$request["status"]]) ? $request["status"] : 0;
+
+            $projectPaymentModel->save($projectPayment);
+
+            log_message("info", "end method updateStatusProjectPayment on ProjectPaymentController");
+            return Response::apiResponse("success update status project payment", $projectPayment);
+        } catch (Throwable $th) {
+            log_message("warning", $th->getMessage());
+            return Response::apiResponse($th->getMessage(), null, 400);
+        }
+    }
 }

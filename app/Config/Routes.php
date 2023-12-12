@@ -74,6 +74,7 @@ $routes->group('api', static function ($routes) {
                 $routes->get('/', 'Api\ProjectPaymentController::getAll');
                 $routes->get('(:num)', 'Api\ProjectPaymentController::get/$1');
                 $routes->put('(:num)', 'Api\ProjectPaymentController::update/$1');
+                $routes->put('update-status/(:num)', 'Api\ProjectPaymentController::updateStatusProjectPayment/$1');
             });
 
             $routes->group('documents', static function ($routes) {
