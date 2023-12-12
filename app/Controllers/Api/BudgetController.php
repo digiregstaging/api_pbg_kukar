@@ -154,7 +154,7 @@ class BudgetController extends BaseController
         log_message("info", "start method getAll on BudgetController");
         try {
             $budgetModel = new Budget();
-            $budget = $budgetModel->findAll();
+            $budget = $budgetModel->orderBy("id")->findAll();
 
             log_message("info", "end method getAll on BudgetController");
             return Response::apiResponse("success getAll budget", $budget);
