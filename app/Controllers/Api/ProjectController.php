@@ -274,6 +274,7 @@ class ProjectController extends BaseController
             $request = [
                 'vendor_id' => $this->request->getGet('vendor_id'),
                 'year' => $this->request->getGet('year'),
+                'user_id' => $this->request->getGet('user_id'),
             ];
 
             log_message("info", json_encode($request));
@@ -281,6 +282,10 @@ class ProjectController extends BaseController
 
             if ($request["vendor_id"]) {
                 $projectModel->where("vendor_id", $request["vendor_id"]);
+            }
+
+            if ($request["user_id"]) {
+                $projectModel->where("user_id", $request["user_id"]);
             }
 
             if ($request["year"]) {
