@@ -309,4 +309,44 @@ class ProjectController extends BaseController
             return Response::apiResponse($th->getMessage(), null, 400);
         }
     }
+
+    public function updateStatusProject($id = null)
+    {
+        log_message("info", "start method updateStatusProject on ProjectController");
+        log_message("info", $id);
+        try {
+            $request = [
+                'status' => $this->request->getVar('status'),
+            ];
+
+            log_message("info", json_encode($request));
+
+
+            $rule = [
+                'status' => 'required|numeric',
+            ];
+
+            if (!$this->validateData($request, $rule)) {
+                log_message("info", "validation error method updateStatusProject on ProjectController");
+                return Response::apiResponse("failed update status project", $this->validator->getErrors(), 422);
+            }
+
+
+            $projectModel = new Project();
+            $project = $projectModel->find($id);
+            if (!$project) {
+                throw new Exception("project not found");
+            }
+
+            $project["status"] = isset(Project::$status[$request["status"]]) ? $request["status"] : 0;
+
+            $projectModel->save($project);
+
+            log_message("info", "end method updateStatusProject on ProjectController");
+            return Response::apiResponse("success update status project", $project);
+        } catch (Throwable $th) {
+            log_message("warning", $th->getMessage());
+            return Response::apiResponse($th->getMessage(), null, 400);
+        }
+    }
 }
