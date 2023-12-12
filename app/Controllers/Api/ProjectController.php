@@ -302,9 +302,9 @@ class ProjectController extends BaseController
 
                 $progress = 0;
                 $projectProgressModel = new ProjectProgress();
-                $projectProgress = $projectProgressModel->where("project_id", $project["id"])->findAll();
-                foreach ($projectProgress as $key => $value) {
-                    $progress = $progress + $value["quality"] * $value["progress"];
+                $projectProgress = $projectProgressModel->where("project_id", $value["id"])->findAll();
+                foreach ($projectProgress as $key => $value2) {
+                    $progress = $progress + $value2["quality"] * $value2["progress"];
                 }
 
                 $value["progress_quantity"] = $progress;
