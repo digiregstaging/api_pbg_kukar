@@ -273,6 +273,7 @@ class ProjectController extends BaseController
         try {
             $request = [
                 'vendor_id' => $this->request->getGet('vendor_id'),
+                'year' => $this->request->getGet('year'),
             ];
 
             log_message("info", json_encode($request));
@@ -280,6 +281,11 @@ class ProjectController extends BaseController
 
             if ($request["vendor_id"]) {
                 $projectModel->where("vendor_id", $request["vendor_id"]);
+            }
+
+            if ($request["year"]) {
+                $projectModel->select("projects.*")->join("budgets", "budgets.id = projects.budget_id")
+                    ->where("budgets.year", $request["year"]);
             }
 
             $project = $projectModel->orderBy("id")
