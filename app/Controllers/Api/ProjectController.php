@@ -299,6 +299,15 @@ class ProjectController extends BaseController
             $newListProject = [];
             foreach ($project as $key => $value) {
                 $value["status_name"] = isset(Project::$status[$value["status"]]) ? Project::$status[$value["status"]] : "";
+
+                $progress = 0;
+                $projectProgressModel = new ProjectProgress();
+                $projectProgress = $projectProgressModel->where("project_id", $project["id"])->findAll();
+                foreach ($projectProgress as $key => $value) {
+                    $progress = $progress + $value["quality"] * $value["progress"];
+                }
+
+                $value["progress_quantity"] = $progress;
                 $newListProject[] = $value;
             }
 
