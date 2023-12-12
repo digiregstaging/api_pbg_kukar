@@ -174,7 +174,7 @@ class ProgramController extends BaseController
                 $programModel->like("sub_activity", $request["sub_activity"], 'both', null, true);
             }
 
-            $program = $programModel->findAll();
+            $program = $programModel->orderBy("id")->findAll();
 
             log_message("info", "end method getAll on ProgramController");
             return Response::apiResponse("success getAll program", $program);
