@@ -32,7 +32,7 @@ class Project extends Model
     public static function getRemainPayment($project)
     {
         $projectPaymentModel = new ProjectPayment();
-        $list_payment = $projectPaymentModel->where("project_id", $project["id"])
+        $list_payment = $projectPaymentModel->where("status", 2)->where("project_id", $project["id"])
             ->findAll();
 
         $remain = $project["contract_value"];
