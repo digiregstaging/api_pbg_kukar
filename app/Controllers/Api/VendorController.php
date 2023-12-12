@@ -171,7 +171,7 @@ class VendorController extends BaseController
         log_message("info", "start method getAll on VendorController");
         try {
             $vendorModel = new Vendor();
-            $vendor = $vendorModel->findAll();
+            $vendor = $vendorModel->orderBy("vendor_name")->findAll();
 
             log_message("info", "end method getAll on VendorController");
             return Response::apiResponse("success getAll vendor", $vendor);
