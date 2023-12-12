@@ -157,7 +157,8 @@ class BudgetController extends BaseController
             $budgetModel->select("budgets.*, SUM(projects.contract_value) as count_contract_value")
                 ->join("projects", "projects.budget_id = budgets.id", "left");
             $budget = $budgetModel->groupBy("budgets.id")
-                ->orderBy("id")
+                ->orderBy("year", 'desc')
+                ->orderBy("source")
                 ->findAll();
 
             log_message("info", "end method getAll on BudgetController");
