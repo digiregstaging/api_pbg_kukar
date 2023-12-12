@@ -155,7 +155,7 @@ class BudgetController extends BaseController
         try {
             $budgetModel = new Budget();
             $budgetModel->select("budgets.*, SUM(projects.contract_value) as count_contract_value")
-                ->join("projects", "projects.budget_id = budgets.id");
+                ->leftJoin("projects", "projects.budget_id = budgets.id");
             $budget = $budgetModel->groupBy("budgets.id")
                 ->orderBy("id")
                 ->findAll();
