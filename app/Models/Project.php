@@ -21,7 +21,8 @@ class Project extends Model
         "status",
         "contract_value",
         "project_code",
-        "pugu"
+        "pugu",
+        "selection_status"
     ];
 
     protected $useTimestamps = true;
@@ -47,5 +48,10 @@ class Project extends Model
         "1" => "Pemilihan",
         "2" => "Berlangsung",
         "3" => "Selesai"
+    ];
+
+    public static $selection_status = [
+        "1" => "Berlangsung",
+        "2" => "Selesai",
     ];
 }

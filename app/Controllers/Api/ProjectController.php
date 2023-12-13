@@ -137,6 +137,8 @@ class ProjectController extends BaseController
                 'contract_value' => $this->request->getVar('contract_value'),
                 'project_code' => $this->request->getVar('project_code'),
                 'pugu' => $this->request->getVar('pugu'),
+                'status' => $this->request->getVar('status'),
+                'selection_status' => $this->request->getVar('selection_status'),
             ];
 
             log_message("info", json_encode($request));
@@ -154,6 +156,8 @@ class ProjectController extends BaseController
                 "contract_value" => "required|integer",
                 "project_code" => "required|string",
                 "pugu" => "required|string",
+                "status" => "required|integer",
+                "selection_status" => "required|integer",
             ];
 
             if (!$this->validateData($request, $rule)) {
@@ -200,6 +204,8 @@ class ProjectController extends BaseController
             $project["contract_value"] = $request['contract_value'];
             $project["project_code"] = $request['project_code'];
             $project["pugu"] = $request['pugu'];
+            $project["status"] = isset(Project::$status[$request["status"]]) ? $request['status'] : 0;
+            $project["selection_status"] = isset(Project::$selection_status[$request["selection_status"]]) ? $request['selection_status'] : 0;
 
 
             $projectModel->save($project);
