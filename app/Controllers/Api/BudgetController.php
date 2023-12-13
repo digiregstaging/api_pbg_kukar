@@ -153,9 +153,20 @@ class BudgetController extends BaseController
     {
         log_message("info", "start method getAll on BudgetController");
         try {
+            $request = [
+                'year' => $this->request->getGet('year'),
+            ];
+
+            log_message("info", json_encode($request));
+
             $budgetModel = new Budget();
             $budgetModel->select("budgets.*, SUM(projects.contract_value) as count_contract_value")
                 ->join("projects", "projects.budget_id = budgets.id", "left");
+
+            if ($request["year"]) {
+                $budgetModel->where("year", $request["year"]);
+            }
+
             $budget = $budgetModel->groupBy("budgets.id")
                 ->orderBy("year", 'desc')
                 ->orderBy("source")
