@@ -136,7 +136,10 @@ class BudgetController extends BaseController
         log_message("info", $id);
         try {
             $budgetModel = new Budget();
-            $budget = $budgetModel->find($id);
+            $budgetModel->select("budgets.*, SUM(projects.contract_value) as count_contract_value")
+                ->join("projects", "projects.budget_id = budgets.id", "left");
+
+            $budget = $budgetModel->groupBy("budgets.id")->find($id);
             if (!$budget) {
                 throw new Exception("budget not found");
             }
