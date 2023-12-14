@@ -77,6 +77,7 @@ class ProjectProgressController extends BaseController
                 'id' => $id,
                 'step' => $this->request->getVar('step'),
                 'quality' => $this->request->getVar('quality'),
+                'progress' => $this->request->getVar('progress'),
                 'project_id' => $this->request->getVar('project_id'),
             ];
 
