@@ -114,6 +114,7 @@ class ProjectProgressController extends BaseController
 
             $projectProgress["step"] = $request['step'];
             $projectProgress["quality"] = $request['quality'];
+            $projectProgress["progress"] = $request['progress'];
             $projectProgress["project_id"] = $request['project_id'];
             $projectProgressModel->save($projectProgress);
 
