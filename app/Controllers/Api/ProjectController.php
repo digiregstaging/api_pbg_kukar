@@ -244,7 +244,13 @@ class ProjectController extends BaseController
         log_message("info", "start method get on ProjectController");
         log_message("info", $id);
         try {
+            $user_login = $this->request->user;
+            log_message("info", json_decode($user_login));
+
             $projectModel = new Project();
+            if ($user_login["role"] == 2) {
+                $projectModel = $projectModel->where("user_id", $user_login["id"]);
+            }
             $project = $projectModel->find($id);
             if (!$project) {
                 throw new Exception("project not found");
