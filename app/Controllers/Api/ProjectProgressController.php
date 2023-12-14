@@ -84,8 +84,9 @@ class ProjectProgressController extends BaseController
 
 
             $rule = [
-                'step' => 'required|integer',
-                "quality" => "required|integer",
+                'step' => 'required',
+                "quality" => "required|numeric",
+                "progress" => "required|numeric",
                 "project_id" => "required|integer",
             ];
 
@@ -100,15 +101,15 @@ class ProjectProgressController extends BaseController
                 throw new Exception("project not found");
             }
 
-            $isExistsprojectProgress = $projectProgressModel
-                ->where("project_id", $request["project_id"])
-                ->where("step", $request["step"])
-                ->where("id !=", $id)
-                ->first();
+            // $isExistsprojectProgress = $projectProgressModel
+            //     ->where("project_id", $request["project_id"])
+            //     ->where("step", $request["step"])
+            //     ->where("id !=", $id)
+            //     ->first();
 
-            if ($isExistsprojectProgress) {
-                throw new Exception("project progress for this project already exists on step " . $request["step"]);
-            }
+            // if ($isExistsprojectProgress) {
+            //     throw new Exception("project progress for this project already exists on step " . $request["step"]);
+            // }
 
             $projectProgress["step"] = $request['step'];
             $projectProgress["quality"] = $request['quality'];
