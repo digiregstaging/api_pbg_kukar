@@ -176,6 +176,7 @@ class DocumentController extends BaseController
         try {
             $request = [
                 'additional_data_id' => $this->request->getGet('additional_data_id'),
+                'type' => $this->request->getGet('type'),
             ];
 
             log_message("info", json_encode($request));
@@ -183,6 +184,11 @@ class DocumentController extends BaseController
 
             if ($request["additional_data_id"]) {
                 $documentModel = $documentModel->where("additional_data_id", $request["additional_data_id"]);
+            }
+
+            if ($request["type"]) {
+                $type = isset(Document::$type[$request["type"]]) ? Document::$type[$request["type"]] : "";
+                $documentModel = $documentModel->where("type", $type);
             }
 
             $document = $documentModel->findAll();
