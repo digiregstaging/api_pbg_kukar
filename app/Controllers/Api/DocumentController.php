@@ -45,7 +45,7 @@ class DocumentController extends BaseController
                 throw new Exception("invalid ext");
             }
 
-            if ($request["ext"] == 1) {
+            if ($request["ext"] == "application/pdf") {
                 $url = Upload::setBase64($request["base_64"])
                     ->setFileName(Document::$type[$request["type"]] . "_" . date("Y-m-d", time()))
                     ->setPath("assets/documents/" . Document::$type[$request["type"]] . "/")
