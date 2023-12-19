@@ -381,7 +381,7 @@ class ProjectController extends BaseController
         log_message("info", "start method getDateForGraph on ProjectController");
         try {
             log_message("info", $year);
-            
+
             $projectModel = new Project();
 
             $project = $projectModel->select("projects.status, COUNT(projects.id) as count_project")
@@ -390,8 +390,18 @@ class ProjectController extends BaseController
                 ->groupBy("projects.status")
                 ->findAll();
 
+            $count_status = [
+                "1" => 0,
+                "2" => 0,
+                "3" => 0,
+            ];
+
+            foreach ($project as $key => $value) {
+                $count_status[$value["status"]] += $value["count_project"];
+            }
+
             log_message("info", "end method getDateForGraph on ProjectController");
-            return Response::apiResponse("success getDateForGraph project", $project);
+            return Response::apiResponse("success getDateForGraph project", $count_status);
         } catch (Throwable $th) {
             log_message("warning", $th->getMessage());
             return Response::apiResponse($th->getMessage(), null, 400);
