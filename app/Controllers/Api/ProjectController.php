@@ -382,12 +382,23 @@ class ProjectController extends BaseController
         try {
             log_message("info", $year);
 
+            $request = [
+                'user_id' => $this->request->getGet('user_id'),
+            ];
+
+            log_message("info", json_encode($request));
+
             $projectModel = new Project();
 
             $project = $projectModel->select("projects.status, COUNT(projects.id) as count_project")
                 ->join("budgets", "budgets.id = projects.budget_id")
-                ->where("budgets.year", $year)
-                ->groupBy("projects.status")
+                ->where("budgets.year", $year);
+
+            if ($request["user_id"]) {
+                $project = $project->where("projects.user_id", $request["user_id"]);
+            }
+
+            $project = $project->groupBy("projects.status")
                 ->findAll();
 
             $count_status = [
