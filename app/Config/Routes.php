@@ -49,6 +49,7 @@ $routes->group('api', static function ($routes) {
                 $routes->get('(:num)', 'Api\ProjectController::get/$1');
                 $routes->put('(:num)', 'Api\ProjectController::update/$1');
                 $routes->put('update-status/(:num)', 'Api\ProjectController::updateStatusProject/$1');
+                $routes->put('get-graph/(:num)', 'Api\ProjectController::getDateForGraph/$1');
             });
 
             $routes->group('vendor-history', static function ($routes) {

@@ -375,4 +375,26 @@ class ProjectController extends BaseController
             return Response::apiResponse($th->getMessage(), null, 400);
         }
     }
+
+    public function getDateForGraph($year = 0)
+    {
+        log_message("info", "start method getDateForGraph on ProjectController");
+        try {
+            log_message("info", $year);
+            
+            $projectModel = new Project();
+
+            $project = $projectModel->select("projects.status, COUNT(projects.id) as count_project")
+                ->join("budgets", "budgets.id = projects.budget_id")
+                ->where("budgets.year", $year)
+                ->groupBy("projects.status")
+                ->findAll();
+
+            log_message("info", "end method getDateForGraph on ProjectController");
+            return Response::apiResponse("success getDateForGraph project", $project);
+        } catch (Throwable $th) {
+            log_message("warning", $th->getMessage());
+            return Response::apiResponse($th->getMessage(), null, 400);
+        }
+    }
 }
