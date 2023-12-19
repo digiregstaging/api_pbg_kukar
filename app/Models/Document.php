@@ -12,7 +12,8 @@ class Document extends Model
         "doc_name",
         "url",
         "type",
-        "additional_data_id"
+        "additional_data_id",
+        "ext"
     ];
 
     protected $useTimestamps = true;
@@ -26,7 +27,7 @@ class Document extends Model
         "3" => "project_payments"
     ];
 
-    public static $mime = [
+    public static $ext = [
         "2" => "image",
         "1" => "pdf",
     ];

@@ -20,7 +20,7 @@ class DocumentController extends BaseController
                 'base_64' => $this->request->getVar('base_64'),
                 'type' => $this->request->getVar('type'),
                 'additional_data_id' => $this->request->getVar('additional_data_id'),
-                'mime' => $this->request->getVar('mime'),
+                'ext' => $this->request->getVar('ext'),
             ];
 
             log_message("info", json_encode($request));
@@ -30,7 +30,7 @@ class DocumentController extends BaseController
                 "base_64" => "required",
                 "type" => "required|integer",
                 "additional_data_id" => "required|integer",
-                "mime" => "required|integer",
+                "ext" => "required|integer",
             ];
 
             if (!$this->validateData($request, $rule)) {
@@ -41,11 +41,11 @@ class DocumentController extends BaseController
 
             $url = "";
 
-            if (!isset(Document::$mime[$request["mime"]])) {
-                throw new Exception("invalid mime");
+            if (!isset(Document::$ext[$request["ext"]])) {
+                throw new Exception("invalid ext");
             }
 
-            if ($request["mime"] == 1) {
+            if ($request["ext"] == 1) {
                 $url = Upload::setBase64($request["base_64"])
                     ->setFileName(Document::$type[$request["type"]] . "_" . date("Y-m-d", time()))
                     ->setPath("assets/documents/" . Document::$type[$request["type"]] . "/")
@@ -61,6 +61,7 @@ class DocumentController extends BaseController
                 'url' => $url,
                 'type' => Document::$type[$request["type"]],
                 'additional_data_id' => $request['additional_data_id'],
+                'ext' => $request['ext'],
             ];
 
 
