@@ -29,6 +29,6 @@ class Document extends Model
 
     public static $ext = [
         "2" => "image",
-        "1" => "pdf",
+        "application/pdf" => "pdf",
     ];
 }
