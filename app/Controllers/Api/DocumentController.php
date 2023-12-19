@@ -30,7 +30,7 @@ class DocumentController extends BaseController
                 "base_64" => "required",
                 "type" => "required|integer",
                 "additional_data_id" => "required|integer",
-                "ext" => "required|integer",
+                "ext" => "required",
             ];
 
             if (!$this->validateData($request, $rule)) {
