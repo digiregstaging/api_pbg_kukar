@@ -170,18 +170,28 @@ class DocumentController extends BaseController
     //     }
     // }
 
-    // public function getAll()
-    // {
-    //     log_message("info", "start method getAll on DocumentController");
-    //     try {
-    //         $documentModel = new Document();
-    //         $document = $documentModel->findAll();
+    public function getAll()
+    {
+        log_message("info", "start method getAll on DocumentController");
+        try {
+            $request = [
+                'additional_data_id' => $this->request->getGet('additional_data_id'),
+            ];
 
-    //         log_message("info", "end method getAll on DocumentController");
-    //         return Response::apiResponse("success getAll document", $document);
-    //     } catch (Throwable $th) {
-    //         log_message("warning", $th->getMessage());
-    //         return Response::apiResponse($th->getMessage(), null, 400);
-    //     }
-    // }
+            log_message("info", json_encode($request));
+            $documentModel = new Document();
+
+            if ($request["additional_data_id"]) {
+                $documentModel = $documentModel->where("additional_data_id", $request["additional_data_id"]);
+            }
+
+            $document = $documentModel->findAll();
+
+            log_message("info", "end method getAll on DocumentController");
+            return Response::apiResponse("success getAll document", $document);
+        } catch (Throwable $th) {
+            log_message("warning", $th->getMessage());
+            return Response::apiResponse($th->getMessage(), null, 400);
+        }
+    }
 }
