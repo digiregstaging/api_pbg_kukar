@@ -24,7 +24,8 @@ class Document extends Model
     public static $type = [
         "1" => "vendor_histories",
         "2" => "project_progress",
-        "3" => "project_payments"
+        "3" => "project_payments",
+        "4" => "project_selection"
     ];
 
     public static $ext = [
