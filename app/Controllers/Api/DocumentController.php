@@ -153,7 +153,7 @@ class DocumentController extends BaseController
                 throw new Exception("invalid path 2");
             }
 
-            $fileToDelete = "public/" . $url_without_hastag[0];
+            $fileToDelete = "public" . $url_without_hastag[0];
 
             if (file_exists($fileToDelete)) {
                 if (unlink($fileToDelete)) {
