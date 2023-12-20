@@ -143,11 +143,11 @@ class DocumentController extends BaseController
 
             $url_without_static_url = explode("https://api.pbg.kukar.geoportal.co.id", $document["url"]);
             log_message("info", json_encode($url_without_static_url));
-            if (!isset($url_without_static_url[0])) {
+            if (!isset($url_without_static_url[1])) {
                 throw new Exception("invalid path 1");
             }
 
-            $url_without_hastag = explode("#", $url_without_static_url[0]);
+            $url_without_hastag = explode("#", $url_without_static_url[1]);
             log_message("info", json_encode($url_without_hastag));
             if (!isset($url_without_hastag[0])) {
                 throw new Exception("invalid path 2");
