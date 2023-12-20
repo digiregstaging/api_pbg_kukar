@@ -79,7 +79,7 @@ $routes->group('api', static function ($routes) {
             });
 
             $routes->group('documents', static function ($routes) {
-                // $routes->delete('(:num)', 'Api\DocumentController::delete/$1');
+                $routes->delete('(:num)', 'Api\DocumentController::delete/$1');
                 $routes->post('/', 'Api\DocumentController::store');
                 $routes->get('/', 'Api\DocumentController::getAll');
                 // $routes->get('(:num)', 'Api\DocumentController::get/$1');

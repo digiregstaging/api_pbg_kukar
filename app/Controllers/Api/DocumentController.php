@@ -130,26 +130,48 @@ class DocumentController extends BaseController
     //     }
     // }
 
-    // public function delete($id = null)
-    // {
-    //     log_message("info", "start method delete on DocumentController");
-    //     log_message("info", $id);
-    //     try {
-    //         $documentModel = new Document();
-    //         $document = $documentModel->find($id);
-    //         if (!$document) {
-    //             throw new Exception("document not found");
-    //         }
+    public function delete($id = null)
+    {
+        log_message("info", "start method delete on DocumentController");
+        log_message("info", $id);
+        try {
+            $documentModel = new Document();
+            $document = $documentModel->find($id);
+            if (!$document) {
+                throw new Exception("document not found");
+            }
 
-    //         $documentModel->delete($id);
+            $url_without_static_url = explode("https://api.pbg.kukar.geoportal.co.id", $document["url"]);
+            if (!isset($url_without_static_url[0])) {
+                throw new Exception("invalid path 1");
+            }
 
-    //         log_message("info", "end method delete on DocumentController");
-    //         return Response::apiResponse("success delete document", null);
-    //     } catch (Throwable $th) {
-    //         log_message("warning", $th->getMessage());
-    //         return Response::apiResponse($th->getMessage(), null, 400);
-    //     }
-    // }
+            $url_without_hastag = explode("#", $url_without_static_url[0]);
+            if (!isset($url_without_hastag[0])) {
+                throw new Exception("invalid path 2");
+            }
+
+            $fileToDelete = "public/" . $url_without_hastag[0];
+
+            if (file_exists($fileToDelete)) {
+                if (unlink($fileToDelete)) {
+                    log_message("info", "success delete file " . $fileToDelete);
+                } else {
+                    log_message("info", "failed delete file " . $fileToDelete);
+                }
+            } else {
+                log_message("info", "file not found " . $fileToDelete);
+            }
+
+            $documentModel->delete($id);
+
+            log_message("info", "end method delete on DocumentController");
+            return Response::apiResponse("success delete document", null);
+        } catch (Throwable $th) {
+            log_message("warning", $th->getMessage());
+            return Response::apiResponse($th->getMessage(), null, 400);
+        }
+    }
 
     // public function get($id = null)
     // {
