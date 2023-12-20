@@ -141,7 +141,7 @@ class DocumentController extends BaseController
                 throw new Exception("document not found");
             }
 
-            $url_without_static_url = explode("https://api.pbg.kukar.geoportal.co.id", $document["url"]);
+            $url_without_static_url = explode("https://api.pbg.kukar.geoportal.co.id/", $document["url"]);
             log_message("info", json_encode($url_without_static_url));
             if (!isset($url_without_static_url[1])) {
                 throw new Exception("invalid path 1");
@@ -153,7 +153,7 @@ class DocumentController extends BaseController
                 throw new Exception("invalid path 2");
             }
 
-            $fileToDelete = "public" . $url_without_hastag[0];
+            $fileToDelete = $url_without_hastag[0];
 
             if (file_exists($fileToDelete)) {
                 if (unlink($fileToDelete)) {
