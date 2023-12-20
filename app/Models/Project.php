@@ -22,7 +22,9 @@ class Project extends Model
         "contract_value",
         "project_code",
         "pugu",
-        "selection_status"
+        "selection_status",
+        "kecamatan_id",
+        "detail_location"
     ];
 
     protected $useTimestamps = true;

@@ -5,6 +5,7 @@ namespace App\Controllers\Api;
 use App\Controllers\BaseController;
 use App\Helpers\Response;
 use App\Models\Budget;
+use App\Models\Kecamatan;
 use App\Models\Program;
 use App\Models\Project;
 use App\Models\ProjectProgress;
@@ -21,7 +22,8 @@ class ProjectController extends BaseController
         try {
             $request = [
                 'project_name' => $this->request->getVar('project_name'),
-                // 'responsible' => $this->request->getVar('responsible'),
+                'kecamatan_id' => $this->request->getVar('kecamatan_id'),
+                'detail_location' => $this->request->getVar('detail_location'),
                 'start_date' => $this->request->getVar('start_date'),
                 'end_date' => $this->request->getVar('end_date'),
                 'work_day' => $this->request->getVar('work_day'),
@@ -38,7 +40,8 @@ class ProjectController extends BaseController
 
             $rule = [
                 'project_name' => 'required|string',
-                // "responsible" => "required|string",
+                "kecamatan_id" => "required|integer",
+                "detail_location" => "required",
                 "start_date" => "required|string",
                 "end_date" => "required|string",
                 "work_day" => "required|integer",
@@ -54,6 +57,12 @@ class ProjectController extends BaseController
             if (!$this->validateData($request, $rule)) {
                 log_message("info", "validation error method store on ProjectController");
                 return Response::apiResponse("failed create project", $this->validator->getErrors(), 422);
+            }
+
+            $kecamatanModel = new Kecamatan();
+            $kecamatan = $kecamatanModel->find($request["kecamatan_id"]);
+            if (!$kecamatan) {
+                throw new Exception("kecamatan not found");
             }
 
             $vendorModel = new Vendor();
@@ -85,6 +94,8 @@ class ProjectController extends BaseController
 
             $data = [
                 'project_name' => $request['project_name'],
+                'kecamatan_id' => $request['kecamatan_id'],
+                'detail_location' => $request['detail_location'],
                 'responsible' => $user["name"],
                 'start_date' => $start_date,
                 'end_date' => $end_date,
@@ -126,7 +137,8 @@ class ProjectController extends BaseController
             $request = [
                 'id' => $id,
                 'project_name' => $this->request->getVar('project_name'),
-                // 'responsible' => $this->request->getVar('responsible'),
+                'kecamatan_id' => $this->request->getVar('kecamatan_id'),
+                'detail_location' => $this->request->getVar('detail_location'),
                 'start_date' => $this->request->getVar('start_date'),
                 'end_date' => $this->request->getVar('end_date'),
                 'work_day' => $this->request->getVar('work_day'),
@@ -145,7 +157,8 @@ class ProjectController extends BaseController
 
             $rule = [
                 'project_name' => 'required|string',
-                // "responsible" => "required|string",
+                'detail_location' => 'required',
+                "kecamatan_id" => "required|integer",
                 "start_date" => "required|string",
                 "end_date" => "required|string",
                 "work_day" => "required|integer",
@@ -163,6 +176,12 @@ class ProjectController extends BaseController
             if (!$this->validateData($request, $rule)) {
                 log_message("info", "validation error method store on ProjectController");
                 return Response::apiResponse("failed update project", $this->validator->getErrors(), 422);
+            }
+
+            $kecamatanModel = new Kecamatan();
+            $kecamatan = $kecamatanModel->find($request["kecamatan_id"]);
+            if (!$kecamatan) {
+                throw new Exception("kecamatan not found");
             }
 
             $vendorModel = new Vendor();
@@ -193,6 +212,8 @@ class ProjectController extends BaseController
             $end_date = date("Y-m-d H:i:s", strtotime($request["end_date"]));
 
             $project["project_name"] = $request['project_name'];
+            $project["kecamatan_id"] = $request['kecamatan_id'];
+            $project["detail_location"] = $request['detail_location'];
             $project["responsible"] = $user["name"];
             $project["start_date"] = $start_date;
             $project["end_date"] = $end_date;

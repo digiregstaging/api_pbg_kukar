@@ -26,6 +26,14 @@ $routes->group('api', static function ($routes) {
                 $routes->put('(:num)', 'Api\BudgetController::update/$1');
             });
 
+            $routes->group('kecamatan', static function ($routes) {
+                $routes->delete('(:num)', 'Api\KecamatanController::delete/$1');
+                $routes->post('/', 'Api\KecamatanController::store');
+                $routes->get('/', 'Api\KecamatanController::getAll');
+                $routes->get('(:num)', 'Api\KecamatanController::get/$1');
+                $routes->put('(:num)', 'Api\KecamatanController::update/$1');
+            });
+
             $routes->group('programs', static function ($routes) {
                 $routes->delete('(:num)', 'Api\ProgramController::delete/$1');
                 $routes->post('/', 'Api\ProgramController::store');
