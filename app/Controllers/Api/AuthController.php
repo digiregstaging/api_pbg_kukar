@@ -151,4 +151,58 @@ class AuthController extends BaseController
             return Response::apiResponse($th->getMessage(), null, 400);
         }
     }
+
+    public function changePassword($id = null)
+    {
+        log_message("info", "start method changePassword on AuthController");
+        try {
+            $userModel = new User();
+            $user = $userModel->find($id);
+            if (!$user) {
+                throw new Exception("user not found");
+            }
+
+            $request = [
+                'id' => $id,
+                'old_password' => $this->request->getVar('old_password'),
+                'new_password' => $this->request->getVar('new_password'),
+                'confirm_new_password' => $this->request->getVar('confirm_new_password'),
+            ];
+
+            log_message("info", json_encode($request));
+
+
+            $rule = [
+                "id" => "required",
+                'old_password' => 'required|string',
+                'new_password' => 'required|string|min_length[8]',
+                "confirm_new_password" => "required|string|min_length[8]",
+            ];
+
+            if (!$this->validateData($request, $rule)) {
+                log_message("info", "validation error method changePassword on AuthController");
+                return Response::apiResponse("failed change password", $this->validator->getErrors(), 422);
+            }
+
+            if ($request["new_password"] != $request["confirm_new_password"]) {
+                throw new Exception("password and confirm password not match");
+            }
+
+            $password_verify = password_verify($request["old_password"], $user["password"]);
+            if (!$password_verify) {
+                throw new Exception("password user invalid");
+            }
+
+            $user["password"] = password_hash($request['new_password'], PASSWORD_DEFAULT);
+
+            $userModel->save($user);
+
+
+            log_message("info", "end method changePassword on AuthController");
+            return Response::apiResponse("success change password", $user);
+        } catch (Throwable $th) {
+            log_message("warning", $th->getMessage());
+            return Response::apiResponse($th->getMessage(), null, 400);
+        }
+    }
 }
