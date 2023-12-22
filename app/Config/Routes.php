@@ -100,4 +100,10 @@ $routes->group('api', static function ($routes) {
         });
         $routes->post('auth/login', 'Api\AuthController::login');
     });
+
+    $routes->group('v2', static function ($routes) {
+        $routes->group('projects', static function ($routes) {
+            $routes->post('/', 'Api\V2\ProjectController::store');
+        });
+    });
 });
