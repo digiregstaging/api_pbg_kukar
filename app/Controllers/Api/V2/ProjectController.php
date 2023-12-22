@@ -129,7 +129,7 @@ class ProjectController extends BaseController
                         "project_id" => "required|integer",
                     ];
 
-                    if (!$this->validateData($p, $rule)) {
+                    if (!$this->validateData((array)$p, $rule)) {
                         log_message("info", "validation error method store on ProjectProgressController");
                         return Response::apiResponse("failed create project progress", $this->validator->getErrors(), 422);
                     }
