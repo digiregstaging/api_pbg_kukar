@@ -20,7 +20,8 @@ class ProjectController extends BaseController
     {
         log_message("info", "start method store on ProjectController");
         try {
-            $this->db->transBegin();
+            $db = \Config\Database::connect();
+            $db->transBegin();
             $request = [
                 'project_name' => $this->request->getVar('project_name'),
                 'kecamatan_id' => $this->request->getVar('kecamatan_id'),
@@ -151,11 +152,11 @@ class ProjectController extends BaseController
             $data["id"] = $projectModel->getInsertID();
 
             log_message("info", "end method store on ProjectController");
-            $this->db->transCommit();
+            $db->transCommit();
             return Response::apiResponse("success create project", $data);
         } catch (Throwable $th) {
             log_message("warning", $th->getMessage());
-            $this->db->transRollback();
+            $db->transRollback();
             return Response::apiResponse($th->getMessage(), null, 400);
         }
     }
