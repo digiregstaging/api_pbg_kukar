@@ -95,6 +95,7 @@ $routes->group('api', static function ($routes) {
             });
 
             $routes->post('auth/logout', 'Api\AuthController::logout');
+            $routes->post('auth/reset-password/(:num)', 'Api\AuthController::resetPassword/$1');
         });
         $routes->post('auth/login', 'Api\AuthController::login');
     });

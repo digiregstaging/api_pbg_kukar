@@ -103,4 +103,52 @@ class AuthController extends BaseController
             return Response::apiResponse($th->getMessage(), null, 400);
         }
     }
+
+    public function resetPassword($id = null)
+    {
+        log_message("info", "start method resetPassword on AuthController");
+        try {
+            $userModel = new User();
+            $user = $userModel->find($id);
+            if (!$user) {
+                throw new Exception("user not found");
+            }
+
+            $request = [
+                'id' => $id,
+                'password' => $this->request->getVar('password'),
+                'confirm_password' => $this->request->getVar('confirm_password'),
+            ];
+
+            log_message("info", json_encode($request));
+
+
+            $rule = [
+                "id" => "required",
+                'password' => 'required|string|min_length[8]',
+                "confirm_password" => "required|string|min_length[8]",
+            ];
+
+            if (!$this->validateData($request, $rule)) {
+                log_message("info", "validation error method resetPassword on AuthController");
+                return Response::apiResponse("failed reset password", $this->validator->getErrors(), 422);
+            }
+
+            if ($request["password"] != $request["confirm_password"]) {
+                throw new Exception("password and confirm password not match");
+            }
+
+
+            $user["password"] = password_hash($request['password'], PASSWORD_DEFAULT);
+
+            $userModel->save($user);
+
+
+            log_message("info", "end method resetPassword on AuthController");
+            return Response::apiResponse("success reset password", $user);
+        } catch (Throwable $th) {
+            log_message("warning", $th->getMessage());
+            return Response::apiResponse($th->getMessage(), null, 400);
+        }
+    }
 }
