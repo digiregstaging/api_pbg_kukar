@@ -8,6 +8,7 @@ use App\Models\Budget;
 use App\Models\Kecamatan;
 use App\Models\Program;
 use App\Models\Project;
+use App\Models\ProjectPayment;
 use App\Models\ProjectProgress;
 use App\Models\User;
 use App\Models\Vendor;
@@ -39,6 +40,7 @@ class ProjectController extends BaseController
                 'status' => $this->request->getVar('status'),
                 'selection_status' => $this->request->getVar('selection_status'),
                 'progress' => $this->request->getVar('progress'),
+                'payments' => $this->request->getVar('payments'),
             ];
 
             log_message("info", json_encode($request));
@@ -132,6 +134,7 @@ class ProjectController extends BaseController
 
                     if (!$this->validateData((array)$p, $rule)) {
                         log_message("info", "validation error method store on ProjectProgressController");
+                        $db->transRollback();
                         return Response::apiResponse("failed create project progress", $this->validator->getErrors(), 422);
                     }
 
@@ -145,6 +148,32 @@ class ProjectController extends BaseController
                     $projectProgressModel = new ProjectProgress();
 
                     $projectProgressModel->insert($data);
+                }
+            }
+
+            if (count($request["payments"]) > 0) {
+                foreach ($request["payments"] as $key => $p) {
+                    $rule = [
+                        'termin' => 'required|string',
+                        "quality_pay" => "required|numeric",
+                    ];
+
+                    if (!$this->validateData((array)$p, $rule)) {
+                        log_message("info", "validation error method store on ProjectProgressController");
+                        $db->transRollback();
+                        return Response::apiResponse("failed create project payments", $this->validator->getErrors(), 422);
+                    }
+
+                    $data = [
+                        'termin' => $p->termin,
+                        'quality_pay' => $p->quality_pay,
+                        'fee_pay' => 0,
+                        'project_id' => $projectModel->getInsertID(),
+                    ];
+
+                    $projectPaymentsModel = new ProjectPayment();
+
+                    $projectPaymentsModel->insert($data);
                 }
             }
 
