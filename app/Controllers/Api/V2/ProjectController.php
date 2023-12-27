@@ -130,6 +130,7 @@ class ProjectController extends BaseController
                         'step' => 'required',
                         "quality" => "required|numeric",
                         "progress" => "required|numeric",
+                        "status" => "required|numeric",
                     ];
 
                     if (!$this->validateData((array)$p, $rule)) {
@@ -142,6 +143,7 @@ class ProjectController extends BaseController
                         'step' => $p->step,
                         'quality' => $p->quality,
                         'progress' => $p->progress,
+                        'status' => $p->status,
                         'project_id' => $projectModel->getInsertID(),
                     ];
 
@@ -155,6 +157,7 @@ class ProjectController extends BaseController
                 foreach ($request["payments"] as $key => $p) {
                     $rule = [
                         'termin' => 'required|string',
+                        'status' => 'required|numeric',
                         "quality_pay" => "required|numeric",
                     ];
 
@@ -168,6 +171,7 @@ class ProjectController extends BaseController
                         'termin' => $p->termin,
                         'quality_pay' => $p->quality_pay,
                         'fee_pay' => 0,
+                        'status' => $p->status,
                         'project_id' => $projectModel->getInsertID(),
                     ];
 
