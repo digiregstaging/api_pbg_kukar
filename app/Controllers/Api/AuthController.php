@@ -76,7 +76,7 @@ class AuthController extends BaseController
             $modelUser->save($user);
 
             log_message("info", "end method login on AuthController");
-            return Response::apiResponse("otp telah dikirim ke email " . $user["email"] . " please check your email");
+            return Response::apiResponse("otp telah dikirim ke email " . $user["email"] . " please check your email", $user["email"]);
         } catch (Throwable $th) {
             log_message("warning", $th->getMessage());
             return Response::apiResponse($th->getMessage(), null, 400);
