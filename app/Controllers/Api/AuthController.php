@@ -271,6 +271,9 @@ class AuthController extends BaseController
             $token = JWT::encode($payload, $key, "HS256");
 
             $user["token"] = $token;
+            $user["attempt_to_verify"] = null;
+            $user["otp"] = null;
+            $user["expired_otp"] = null;
 
             $userModel->save($user);
 
