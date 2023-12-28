@@ -17,7 +17,10 @@ class User extends Model
         "phone",
         "email",
         "token",
-        "position"
+        "position",
+        "otp",
+        "expired_otp",
+        "attempt_to_verify"
     ];
 
     protected $useTimestamps = true;
