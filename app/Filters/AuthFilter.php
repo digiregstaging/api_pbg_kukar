@@ -51,10 +51,13 @@ class AuthFilter implements FilterInterface
         try {
             $credentials = JWT::decode($token, new Key($key, 'HS256'));
         } catch (ExpiredException $e) {
+            log_message("warning", $e->getMessage());
             return Response::apiResponse("token expired", $e->getMessage(), 401);
         } catch (SignatureInvalidException $e) {
+            log_message("warning", $e->getMessage());
             return Response::apiResponse("signature key invalid", $e->getMessage(), 401);
         } catch (UnexpectedValueException $e) {
+            log_message("warning", $e->getMessage());
             return Response::apiResponse("invalid token format", $e->getMessage(), 401);
         }
 
